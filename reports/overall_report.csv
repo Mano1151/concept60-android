@@ -6,5 +6,5 @@ frontend_warnings,1,Bundle chunk size warning
 backend_total_tests,5,API probes and integration checks
 backend_passed,5,Host reachable and endpoints responded as expected (mock and remote probes)
 backend_partial,0,All backend checks executed via mock server
-overall_verdict,PASS,Static checks and mock-backed integration tests passed
+overall_verdict,PASS
 recommended_next_steps,"Run E2E tests (Cypress/Playwright); exercise auth flows; run interactive QA flow","Use automated browser tests and create test accounts for Firebase auth"
