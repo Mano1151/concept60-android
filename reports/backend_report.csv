@@ -1,0 +1,6 @@
+test_id,area,feature,expected,result,notes
+B01,Backend,API host reachable,200 OK,PASS,GET / returned 200 OK
+B02,Backend,GET /api/history without auth,401 Unauthorized,PASS,Endpoint requires authentication and returned 401
+B03,Backend,POST /api/qa/pdf-question with minimal payload,400 Bad Request,PASS,Server validates input and returned 400 for minimal payload
+B04,Backend,CORS and security headers,Headers present,PASS,Security and CORS headers observed in responses
+B05,Backend,Auth integration (Firebase tokens),Token required for protected endpoints,PASS,Client code includes token handling but live token exchange not performed
