@@ -1,6 +1,0 @@
-test_id,area,feature,expected,result,notes
-B01,PASS,API host reachable (mock)
-B02,PASS,GET /api/history without auth -> 401 (mock)
-B03,PASS,POST /api/qa/pdf-question validation (mock)
-B04,Backend,CORS and security headers,Headers present,PASS,Security and CORS headers observed in responses
-B05,PASS,Auth token handling code present (static)

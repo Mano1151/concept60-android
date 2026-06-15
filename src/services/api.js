@@ -6,6 +6,8 @@ const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'https://concept60-1.onrender.com',
   headers: {
     'Content-Type': 'application/json',
+    'bypass-tunnel-reminder': 'true',
+    'ngrok-skip-browser-warning': 'true',
   },
 });
 

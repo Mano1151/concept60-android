@@ -1,5 +1,8 @@
 {
   "appId": "com.concept60.app",
   "appName": "Concept60",
-  "webDir": "dist"
+  "webDir": "dist",
+  "server": {
+    "cleartext": true
+  }
 }

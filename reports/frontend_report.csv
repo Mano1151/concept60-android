@@ -1,7 +1,0 @@
-test_id,area,feature,expected,result,notes
-F01,Frontend,Build (vite build),Build completes successfully,PASS,Build succeeded in 13.77s (warning: large chunks)
-F02,Frontend,Routes exist (App.jsx),All routes present and renderable,PASS,Routes enumerated in src/App.jsx
-F03,Frontend,PDF extraction (src/utils/pdf.js),PDF text extraction available,PASS,pdf.worker built into dist; src/utils/pdf.js present
-F04,Frontend,Env vars (.env),Firebase + API env present,PASS,.env contains VITE_API_URL and Firebase keys
-F05,Frontend,Auth pages present (Login/Signup/ForgotPassword),Pages exist,PARTIALLY_VERIFIED,Files present but interactive auth flows not executed
-F06,Frontend,Bundle size warning,Chunks <500kb recommended,WARNING,Some chunks exceed 500kB; consider code-splitting
