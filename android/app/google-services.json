@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "894161805381",
+    "project_id": "concept60-50dbd",
+    "storage_bucket": "concept60-50dbd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894161805381:android:0fadf808b81b751f8c832c",
+        "android_client_info": {
+          "package_name": "com.concept60.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894161805381-agocrktskhrg95k235ok8q62kmgoqqfg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.concept60.app",
+            "certificate_hash": "23f5e47c1e63541ca421cced8e2a50b2b66de242"
+          }
+        },
+        {
+          "client_id": "894161805381-ccqs5ebhgpt7pjo9gifs0ojaabb5t2iq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJj9mYKLvH1FltMnyyZkN3UiYDqvnmFtU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894161805381-ccqs5ebhgpt7pjo9gifs0ojaabb5t2iq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

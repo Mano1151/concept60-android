@@ -22,3 +22,13 @@ app/*.keystore
 e2e-tests/venv/
 e2e-tests/node_modules/
 e2e-tests/.cache/
+
+# Added from remote
+node_modules/
+dist/
+.env
+android/.gradle/
+android/build/
+android/app/build/
+.idea/
+.vscode/
