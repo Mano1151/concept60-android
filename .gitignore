@@ -1,0 +1,24 @@
+# Android generated
+*.iml
+.gradle/
+.idea/
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+build/
+/captures
+.externalNativeBuild
+.cxx
+*.apk
+*.aab
+
+# Secrets — never commit these
+app/google-services.json
+app/*.jks
+app/*.keystore
+
+# E2E test dependencies
+e2e-tests/venv/
+e2e-tests/node_modules/
+e2e-tests/.cache/
