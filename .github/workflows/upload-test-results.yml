@@ -11,16 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Upload Appium Test Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: appium-test-reports
         path: e2e-tests/Appium_Test_Report.xlsx
 
     - name: Upload Vulnerability Test Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: vulnerability-reports
         path: e2e-tests/Vulnerability_Test_Report.xlsx
