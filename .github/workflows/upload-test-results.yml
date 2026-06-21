@@ -17,7 +17,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: appium-test-reports
-        path: e2e-tests/E2E_Test_Report.xlsx
+        path: e2e-tests/Appium_Test_Report.xlsx
 
     - name: Upload Vulnerability Test Report
       uses: actions/upload-artifact@v3
