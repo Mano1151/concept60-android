@@ -13,10 +13,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Upload Test Reports Excel
+    - name: Upload Appium Test Report
       uses: actions/upload-artifact@v3
       with:
-        name: Automated-Test-Reports
-        path: |
-          e2e-tests/E2E_Test_Report.xlsx
-          e2e-tests/Vulnerability_Test_Report.xlsx
+        name: appium-test-reports
+        path: e2e-tests/E2E_Test_Report.xlsx
+
+    - name: Upload Vulnerability Test Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: vulnerability-reports
+        path: e2e-tests/Vulnerability_Test_Report.xlsx
