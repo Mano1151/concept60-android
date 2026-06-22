@@ -74,9 +74,10 @@ fun Navigation() {
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Home.route,
+            startDestination = Screen.Home.route, // Default to Home, redirect logic below
             modifier = Modifier.padding(padding)
         ) {
+            // ... (rest of NavHost remains the same)
 
             composable(Screen.Home.route) {
                 HomeScreen(navController = navController)

@@ -30,31 +30,43 @@ class AuthViewModel @Inject constructor(
 
     fun signInWithEmail(email: String, password: String) {
         viewModelScope.launch {
-            _authState.value = AuthState.Loading
-            authRepository.signInWithEmail(email, password).fold(
-                onSuccess = { _authState.value = AuthState.Success("Signed in successfully.") },
-                onFailure = { _authState.value = AuthState.Error(it.message ?: "Sign in failed.") }
-            )
+            try {
+                _authState.value = AuthState.Loading
+                authRepository.signInWithEmail(email, password).fold(
+                    onSuccess = { _authState.value = AuthState.Success("Signed in successfully.") },
+                    onFailure = { _authState.value = AuthState.Error(it.message ?: "Sign in failed.") }
+                )
+            } catch (e: Exception) {
+                _authState.value = AuthState.Error(e.message ?: "An unexpected error occurred.")
+            }
         }
     }
 
     fun signUpWithEmail(email: String, password: String) {
         viewModelScope.launch {
-            _authState.value = AuthState.Loading
-            authRepository.signUpWithEmail(email, password).fold(
-                onSuccess = { _authState.value = AuthState.Success("Account created.") },
-                onFailure = { _authState.value = AuthState.Error(it.message ?: "Sign up failed.") }
-            )
+            try {
+                _authState.value = AuthState.Loading
+                authRepository.signUpWithEmail(email, password).fold(
+                    onSuccess = { _authState.value = AuthState.Success("Account created.") },
+                    onFailure = { _authState.value = AuthState.Error(it.message ?: "Sign up failed.") }
+                )
+            } catch (e: Exception) {
+                _authState.value = AuthState.Error(e.message ?: "An unexpected error occurred.")
+            }
         }
     }
 
     fun sendPasswordReset(email: String) {
         viewModelScope.launch {
-            _authState.value = AuthState.Loading
-            authRepository.sendPasswordReset(email).fold(
-                onSuccess = { _authState.value = AuthState.Success("Reset email sent.") },
-                onFailure = { _authState.value = AuthState.Error(it.message ?: "Failed to send reset email.") }
-            )
+            try {
+                _authState.value = AuthState.Loading
+                authRepository.sendPasswordReset(email).fold(
+                    onSuccess = { _authState.value = AuthState.Success("Reset email sent.") },
+                    onFailure = { _authState.value = AuthState.Error(it.message ?: "Failed to send reset email.") }
+                )
+            } catch (e: Exception) {
+                _authState.value = AuthState.Error(e.message ?: "An unexpected error occurred.")
+            }
         }
     }
 

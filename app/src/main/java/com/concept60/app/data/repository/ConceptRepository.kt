@@ -17,6 +17,7 @@ class ConceptRepository @Inject constructor(
             Result.success(response.toConceptResult())
         } catch (e: Exception) {
             val friendlyMessage = when {
+                e is retrofit2.HttpException && e.code() == 401 -> "HTTP 401: Unauthorized"
                 e is java.io.EOFException || e.message?.contains("End of input") == true ->
                     "The server is still waking up. Please try one more time in a few seconds."
                 e is java.net.ConnectException -> "Cannot connect to server. Check your internet."

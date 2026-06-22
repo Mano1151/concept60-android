@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.concept60.app.data.model.ConceptResult
 import com.concept60.app.data.model.Keyword
+import com.concept60.app.ui.Screen
 import com.concept60.app.ui.components.*
 import com.concept60.app.ui.theme.Accent
 import com.concept60.app.viewmodel.*
@@ -69,16 +70,28 @@ fun ResultScreen(
 
             is ConceptUiState.Error -> {
                 PanelCard {
-                    Text("Something went wrong", style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.onSurface)
+                    val isAuthError = state.message.contains("401") || state.message.contains("unauthorized", ignoreCase = true)
+                    Text(
+                        if (isAuthError) "Sign in required" else "Something went wrong",
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
                     Spacer(Modifier.height(8.dp))
-                    Text(state.message, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(
+                        if (isAuthError) "Please sign in to access AI explanations." else state.message,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                     Spacer(Modifier.height(16.dp))
                     Button(
-                        onClick = { navController.popBackStack() },
+                        onClick = {
+                            if (isAuthError) navController.navigate(Screen.Login.route)
+                            else navController.popBackStack()
+                        },
                         shape = RoundedCornerShape(50),
                         colors = ButtonDefaults.buttonColors(containerColor = Accent),
-                    ) { Text("Search again", color = Color.White) }
+                    ) {
+                        Text(if (isAuthError) "Go to Sign In" else "Search again", color = Color.White)
+                    }
                 }
             }
 
@@ -238,7 +251,6 @@ fun ResultScreen(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
                             ProgressStat("Concepts", prog.conceptsReviewed.toString(), Modifier.weight(1f))
-                            ProgressStat("Quizzes", prog.quizzesCompleted.toString(), Modifier.weight(1f))
                             ProgressStat("PDF Q&A", prog.pdfQuestionsAnswered.toString(), Modifier.weight(1f))
                         }
                     }

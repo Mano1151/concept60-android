@@ -48,8 +48,12 @@ object AppModule {
         val request = chain.request()
         val user = auth.currentUser
         val token = if (user != null) {
-            runBlocking {
-                try { user.getIdToken(true).await().token } catch (e: Exception) { null }
+            try {
+                // Synchronously await the token task using Play Services Tasks API
+                // This is safer than runBlocking + await() in an Interceptor
+                com.google.android.gms.tasks.Tasks.await(user.getIdToken(false), 30, TimeUnit.SECONDS).token
+            } catch (e: Exception) {
+                null
             }
         } else null
 

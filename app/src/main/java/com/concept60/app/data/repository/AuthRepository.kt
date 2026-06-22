@@ -31,7 +31,7 @@ class AuthRepository @Inject constructor(
     suspend fun signInWithEmail(email: String, password: String): Result<UserProfile> {
         return try {
             val result = auth.signInWithEmailAndPassword(email, password).await()
-            val user = result.user!!
+            val user = result.user ?: return Result.failure(Exception("Login failed: User not found"))
             Result.success(UserProfile(user.uid, user.email, user.displayName, user.photoUrl?.toString()))
         } catch (e: Exception) {
             Result.failure(e)
@@ -41,7 +41,7 @@ class AuthRepository @Inject constructor(
     suspend fun signUpWithEmail(email: String, password: String): Result<UserProfile> {
         return try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
-            val user = result.user!!
+            val user = result.user ?: return Result.failure(Exception("Signup failed: User not created"))
             Result.success(UserProfile(user.uid, user.email, user.displayName, user.photoUrl?.toString()))
         } catch (e: Exception) {
             Result.failure(e)

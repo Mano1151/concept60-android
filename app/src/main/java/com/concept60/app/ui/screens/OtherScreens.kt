@@ -537,7 +537,6 @@ fun ProfileScreen(
                 ProfileStatItem("Day Streak", "0", Icons.Default.LocalFireDepartment),
                 ProfileStatItem("Concepts Explained", progress.conceptsReviewed.toString(), Icons.Default.Layers),
                 ProfileStatItem("Your Library", savedCount.toString(), Icons.Default.Description),
-                ProfileStatItem("Quizzes Passed", progress.quizzesCompleted.toString(), Icons.Default.Psychology),
                 ProfileStatItem("PDF Q&A", progress.pdfQuestionsAnswered.toString(), Icons.Default.Article),
                 ProfileStatItem("Minutes Learned", "${progress.conceptsReviewed * 2}", Icons.Default.Timer),
             )
@@ -559,7 +558,9 @@ fun ProfileScreen(
             Button(
                 onClick = {
                     authViewModel.signOut()
-                    navController.navigate(Screen.Home.route) { popUpTo(0) }
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                    }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(50),

@@ -17,11 +17,13 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.concept60.app.data.model.TrendingConcept
 import com.concept60.app.ui.Screen
 import com.concept60.app.ui.components.*
 import com.concept60.app.ui.theme.Accent
+import com.concept60.app.viewmodel.AuthViewModel
 import java.util.Calendar
 
 private val DAILY_CONCEPTS = listOf(
@@ -37,7 +39,11 @@ private val DAILY_CONCEPTS = listOf(
 )
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel = hiltViewModel()
+) {
+    val currentUser by authViewModel.currentUser.collectAsState(initial = null)
     var query by remember { mutableStateOf("") }
     val keyboard = LocalSoftwareKeyboardController.current
     
@@ -65,10 +71,10 @@ fun HomeScreen(navController: NavController) {
 
         // ── Hero / Search ─────────────────────────────────────────────────────
         PanelCard {
-            OverlineLabel("Concept in 60 Seconds")
+            OverlineLabel(if (currentUser != null) "Welcome back, ${currentUser?.displayName ?: currentUser?.email?.substringBefore("@") ?: "Scholar"}" else "Concept in 60 Seconds")
             Spacer(Modifier.height(12.dp))
             Text(
-                text = "Learn any concept with calm, clear AI explanations.",
+                text = if (currentUser != null) "Ready to learn something new today?" else "Learn any concept with calm, clear AI explanations.",
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.onSurface,
             )
