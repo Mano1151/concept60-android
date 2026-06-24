@@ -60,134 +60,129 @@ fun LoginScreen(
         }
     }
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
+        Spacer(Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
+
+        Spacer(Modifier.height(24.dp))
+        Image(
+            painter = painterResource(id = R.mipmap.concept60_foreground),
+            contentDescription = "Concept60 Logo",
             modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .align(Alignment.TopCenter),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
+                .size(100.dp)
+                .clip(CircleShape)
+                .background(Color(0xFF3D65DC)),
+            contentScale = ContentScale.Inside
+        )
+        Spacer(Modifier.height(8.dp))
 
-            Spacer(Modifier.height(24.dp))
-            Image(
-                painter = painterResource(id = R.mipmap.concept60_foreground),
-                contentDescription = "Concept60 Logo",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFF3D65DC)),
-                contentScale = ContentScale.Inside
+        PanelCard {
+            Text(
+                "Welcome back", style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(4.dp))
+            Text(
+                "Sign in to access your saved concepts and progress.",
+                style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(Modifier.height(24.dp))
 
-            PanelCard {
-                Text(
-                    "Welcome back", style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    "Sign in to access your saved concepts and progress.",
-                    style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(Modifier.height(24.dp))
+            // Email field
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email address") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Accent),
+            )
+            Spacer(Modifier.height(12.dp))
 
-                // Email field
-                OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    label = { Text("Email address") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    singleLine = true,
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Accent),
-                )
-                Spacer(Modifier.height(12.dp))
-
-                // Password field
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text("Password") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    visualTransformation = if (passwordVisible) VisualTransformation.None
-                    else PasswordVisualTransformation(),
-                    trailingIcon = {
-                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                            Icon(
-                                if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                contentDescription = null,
-                            )
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    singleLine = true,
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Accent),
-                )
-
-                var rememberMe by remember { mutableStateOf(true) }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(top = 8.dp)
-                ) {
-                    Checkbox(
-                        checked = rememberMe,
-                        onCheckedChange = { rememberMe = it },
-                        colors = CheckboxDefaults.colors(checkedColor = Accent)
-                    )
-                    Text("Remember me", style = MaterialTheme.typography.bodyMedium)
-                    Spacer(Modifier.weight(1f))
-                    TextButton(
-                        onClick = { navController.navigate(Screen.ForgotPassword.route) },
-                        contentPadding = PaddingValues(0.dp),
-                    ) { Text("Forgot password?", color = Accent) }
-                }
-
-                Spacer(Modifier.height(16.dp))
-
-                if (authState is AuthState.Error) {
-                    Text(
-                        (authState as AuthState.Error).message,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Spacer(Modifier.height(8.dp))
-                }
-
-                Button(
-                    onClick = { viewModel.signInWithEmail(email, password) },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(50),
-                    colors = ButtonDefaults.buttonColors(containerColor = Accent),
-                    enabled = email.isNotBlank() && password.isNotBlank() && authState !is AuthState.Loading,
-                ) {
-                    if (authState is AuthState.Loading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
-                            color = Color.White,
-                            strokeWidth = 2.dp
+            // Password field
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Password") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                visualTransformation = if (passwordVisible) VisualTransformation.None
+                else PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                            contentDescription = null,
                         )
-                    } else {
-                        Text("Sign in", color = Color.White, fontWeight = FontWeight.SemiBold)
                     }
-                }
-                Spacer(Modifier.height(16.dp))
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Accent),
+            )
+
+            var rememberMe by remember { mutableStateOf(true) }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 8.dp)
+            ) {
+                Checkbox(
+                    checked = rememberMe,
+                    onCheckedChange = { rememberMe = it },
+                    colors = CheckboxDefaults.colors(checkedColor = Accent)
+                )
+                Text("Remember me", style = MaterialTheme.typography.bodyMedium)
+                Spacer(Modifier.weight(1f))
+                TextButton(
+                    onClick = { navController.navigate(Screen.ForgotPassword.route) },
+                    contentPadding = PaddingValues(0.dp),
+                ) { Text("Forgot password?", color = Accent) }
             }
+
+            Spacer(Modifier.height(16.dp))
+
+            if (authState is AuthState.Error) {
+                Text(
+                    (authState as AuthState.Error).message,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(Modifier.height(8.dp))
+            }
+
+            Button(
+                onClick = { viewModel.signInWithEmail(email, password) },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(50),
+                colors = ButtonDefaults.buttonColors(containerColor = Accent),
+                enabled = email.isNotBlank() && password.isNotBlank() && authState !is AuthState.Loading,
+            ) {
+                if (authState is AuthState.Loading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        color = Color.White,
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text("Sign in", color = Color.White, fontWeight = FontWeight.SemiBold)
+                }
+            }
+            Spacer(Modifier.height(16.dp))
         }
+
+        Spacer(Modifier.weight(1f))
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter)
                 .padding(bottom = 16.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
@@ -200,6 +195,8 @@ fun LoginScreen(
                 Text("Sign up", color = Accent, fontWeight = FontWeight.SemiBold)
             }
         }
+
+        Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
     }
 }
 
@@ -232,134 +229,129 @@ fun SignupScreen(
         }
     }
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
+        Spacer(Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
+
+        Spacer(Modifier.height(24.dp))
+        Image(
+            painter = painterResource(id = R.mipmap.concept60_foreground),
+            contentDescription = "Concept60 Logo",
             modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .align(Alignment.TopCenter),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
+                .size(100.dp)
+                .clip(CircleShape)
+                .background(Color(0xFF3D65DC)),
+            contentScale = ContentScale.Inside
+        )
+        Spacer(Modifier.height(8.dp))
 
-            Spacer(Modifier.height(24.dp))
-            Image(
-                painter = painterResource(id = R.mipmap.concept60_foreground),
-                contentDescription = "Concept60 Logo",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFF3D65DC)),
-                contentScale = ContentScale.Inside
+        PanelCard {
+            Text(
+                "Create your account",
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(4.dp))
+            Text(
+                "Start saving concepts and tracking your learning progress.",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+            Spacer(Modifier.height(24.dp))
 
-            PanelCard {
-                Text(
-                    "Create your account",
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                )
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    "Start saving concepts and tracking your learning progress.",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                )
-                Spacer(Modifier.height(24.dp))
-
-                OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    label = { Text("Email address") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    singleLine = true,
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Accent),
-                )
-                Spacer(Modifier.height(12.dp))
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text("Password") },
-                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                    trailingIcon = {
-                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                            Icon(if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility, null)
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    singleLine = true,
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Accent),
-                )
-                Spacer(Modifier.height(12.dp))
-                OutlinedTextField(
-                    value = confirmPassword,
-                    onValueChange = { confirmPassword = it },
-                    label = { Text("Confirm password") },
-                    visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    singleLine = true,
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Accent),
-                )
-                Spacer(Modifier.height(16.dp))
-
-                val errorMsg = localError.ifEmpty { (authState as? AuthState.Error)?.message ?: "" }
-                if (errorMsg.isNotEmpty()) {
-                    Text(
-                        errorMsg,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Spacer(Modifier.height(8.dp))
-                }
-
-                Button(
-                    onClick = {
-                        localError = ""
-                        if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
-                            localError = "Please fill in all fields."
-                        } else if (password != confirmPassword) {
-                            localError = "Passwords do not match."
-                        } else {
-                            viewModel.signUpWithEmail(email, password)
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(50),
-                    colors = ButtonDefaults.buttonColors(containerColor = Accent),
-                    enabled = authState !is AuthState.Loading,
-                ) {
-                    if (authState is AuthState.Loading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
-                            color = Color.White,
-                            strokeWidth = 2.dp
-                        )
-                    } else {
-                        Text("Create account", color = Color.White, fontWeight = FontWeight.SemiBold)
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email address") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Accent),
+            )
+            Spacer(Modifier.height(12.dp))
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Password") },
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility, null)
                     }
-                }
-                Spacer(Modifier.height(16.dp))
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Accent),
+            )
+            Spacer(Modifier.height(12.dp))
+            OutlinedTextField(
+                value = confirmPassword,
+                onValueChange = { confirmPassword = it },
+                label = { Text("Confirm password") },
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Accent),
+            )
+            Spacer(Modifier.height(16.dp))
+
+            val errorMsg = localError.ifEmpty { (authState as? AuthState.Error)?.message ?: "" }
+            if (errorMsg.isNotEmpty()) {
+                Text(
+                    errorMsg,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(Modifier.height(8.dp))
             }
+
+            Button(
+                onClick = {
+                    localError = ""
+                    if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
+                        localError = "Please fill in all fields."
+                    } else if (password != confirmPassword) {
+                        localError = "Passwords do not match."
+                    } else {
+                        viewModel.signUpWithEmail(email, password)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(50),
+                colors = ButtonDefaults.buttonColors(containerColor = Accent),
+                enabled = authState !is AuthState.Loading,
+            ) {
+                if (authState is AuthState.Loading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        color = Color.White,
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text("Create account", color = Color.White, fontWeight = FontWeight.SemiBold)
+                }
+            }
+            Spacer(Modifier.height(16.dp))
         }
+
+        Spacer(Modifier.weight(1f))
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter)
                 .padding(bottom = 16.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
@@ -372,6 +364,8 @@ fun SignupScreen(
                 Text("Sign in", color = Accent, fontWeight = FontWeight.SemiBold)
             }
         }
+
+        Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
     }
 }
 

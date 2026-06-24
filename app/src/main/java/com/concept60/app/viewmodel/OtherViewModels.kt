@@ -33,6 +33,12 @@ class SavedViewModel @Inject constructor(
     val learningProgress: StateFlow<LearningProgress> = savedRepo.learningProgress
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), LearningProgress())
 
+    val dayStreak: StateFlow<Int> = _state.map { state ->
+        if (state is SavedUiState.Success) {
+            calculateStreak(state.items)
+        } else 0
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
     init {
         viewModelScope.launch {
             // Start from local data immediately
@@ -41,6 +47,32 @@ class SavedViewModel @Inject constructor(
             }
         }
         loadCloud()
+    }
+
+    private fun calculateStreak(items: List<SavedConcept>): Int {
+        if (items.isEmpty()) return 0
+        // Use UTC days for streak calculation to avoid timezone issues during travel
+        val dayMillis = 24 * 60 * 60 * 1000L
+        val sortedDays = items.map { it.searchedAt / dayMillis }.distinct().sortedDescending()
+        
+        val today = System.currentTimeMillis() / dayMillis
+        val yesterday = today - 1
+        
+        if (sortedDays.isEmpty()) return 0
+        // If the latest activity isn't today or yesterday, streak is broken
+        if (sortedDays[0] < yesterday) return 0
+        
+        var streak = 1
+        var current = sortedDays[0]
+        for (i in 1 until sortedDays.size) {
+            if (sortedDays[i] == current - 1) {
+                streak++
+                current = sortedDays[i]
+            } else {
+                break
+            }
+        }
+        return streak
     }
 
     private fun loadCloud() {

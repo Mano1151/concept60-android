@@ -55,6 +55,9 @@ class SavedConceptsRepository @Inject constructor(
             current.add(0, concept)
             prefs[KEY_RECENT] = gson.toJson(current.take(50))
         }
+
+        // We no longer save to Firestore here because the server /api/concept 
+        // is now the single source of truth for Firestore writes.
     }
 
     suspend fun removeRecentSearch(id: String) {

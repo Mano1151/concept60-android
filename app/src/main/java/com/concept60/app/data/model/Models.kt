@@ -66,6 +66,8 @@ data class SavedConcept(
     val category: String = "General",
     val oneLiner: String = "",
     val scenario: String = "",
+    val exampleScenarios: List<String> = emptyList(),
+    val keywords: List<Keyword> = emptyList(),
     val searchedAt: Long = System.currentTimeMillis(),
 )
 

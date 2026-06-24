@@ -60,6 +60,8 @@ class ConceptViewModel @Inject constructor(
                             category = category,
                             oneLiner = result.oneLiner,
                             scenario = result.scenario,
+                            exampleScenarios = result.exampleScenarios,
+                            keywords = result.keywords,
                         )
                     )
                     savedRepo.incrementConceptsReviewed()
@@ -98,6 +100,8 @@ class ConceptViewModel @Inject constructor(
                     category = category,
                     oneLiner = result.oneLiner,
                     scenario = result.scenario,
+                    exampleScenarios = result.exampleScenarios,
+                    keywords = result.keywords,
                 )
             )
         }

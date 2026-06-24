@@ -9,5 +9,8 @@ class Concept60App : Application() {
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
+        val options = FirebaseApp.getInstance().options
+        android.util.Log.d("FirebaseInit", "Connected to Project: ${options.projectId}")
+        android.util.Log.d("FirebaseInit", "Application ID: ${options.applicationId}")
     }
 }

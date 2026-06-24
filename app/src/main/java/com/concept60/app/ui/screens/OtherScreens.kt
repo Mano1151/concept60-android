@@ -391,6 +391,7 @@ fun ProfileScreen(
     val currentUser by authViewModel.currentUser.collectAsState(initial = null)
     val savedState by savedViewModel.state.collectAsState()
     val progress by savedViewModel.learningProgress.collectAsState(initial = LearningProgress())
+    val dayStreak by savedViewModel.dayStreak.collectAsState()
     
     var isEditingName by remember { mutableStateOf(false) }
     var editName by remember { mutableStateOf("") }
@@ -481,64 +482,16 @@ fun ProfileScreen(
                     }
                 }
                 
-                Spacer(Modifier.height(16.dp))
-                
-                // Real Level Progress based on concepts reviewed
-                val level = (progress.conceptsReviewed / 10) + 1
-                val currentXP = (progress.conceptsReviewed % 10) * 100
-                val nextLevelXP = 1000
-                
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Surface(color = Accent, shape = RoundedCornerShape(8.dp)) {
-                        Text("Level $level", color = Color.White, modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp), style = MaterialTheme.typography.labelSmall)
-                    }
-                    Spacer(Modifier.width(8.dp))
-                    Text("$currentXP / $nextLevelXP XP", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-                Spacer(Modifier.height(8.dp))
-                LinearProgressIndicator(
-                    progress = { currentXP.toFloat() / nextLevelXP },
-                    modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)),
-                    color = Accent,
-                    trackColor = MaterialTheme.colorScheme.surfaceVariant
-                )
-                Spacer(Modifier.height(4.dp))
-                Text("${nextLevelXP - currentXP} XP left to Level ${level + 1}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-
-            // Weekly Activity (Simplified live view)
-            PanelCard {
-                Text("Recent Activity", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(16.dp))
-                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                    val days = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
-                    days.forEach { day ->
-                        val isActive = (0..1).random() == 1 // Simulating some activity for UI
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Box(
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .clip(CircleShape)
-                                    .background(if (isActive) Accent else MaterialTheme.colorScheme.surfaceVariant),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                if (isActive) Icon(Icons.Default.Check, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
-                            }
-                            Spacer(Modifier.height(4.dp))
-                            Text(day, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                    }
-                }
+                // Achievement/XP section removed as per web updates to simplify profile
             }
 
             // Live Stats Grid
             val savedCount = (savedState as? SavedUiState.Success)?.items?.size ?: 0
             val stats = listOf(
-                ProfileStatItem("Day Streak", "0", Icons.Default.LocalFireDepartment),
-                ProfileStatItem("Concepts Explained", progress.conceptsReviewed.toString(), Icons.Default.Layers),
-                ProfileStatItem("Your Library", savedCount.toString(), Icons.Default.Description),
-                ProfileStatItem("PDF Q&A", progress.pdfQuestionsAnswered.toString(), Icons.Default.Article),
-                ProfileStatItem("Minutes Learned", "${progress.conceptsReviewed * 2}", Icons.Default.Timer),
+                ProfileStatItem("Day Streak", dayStreak.toString(), Icons.Default.LocalFireDepartment),
+                ProfileStatItem("Total Searches", savedCount.toString(), Icons.Default.History),
+                ProfileStatItem("Concepts Saved", savedCount.toString(), Icons.Default.Bookmark),
+                ProfileStatItem("Minutes Learned", "0", Icons.Default.Timer),
             )
 
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
